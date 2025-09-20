@@ -27,7 +27,7 @@ jobs:
       FAUCET_SCHEME = http:/
       FAUCET_URL = \$(FAUCET_SCHEME)/\$(FAUCET_HOST)/sendcoins
       EOL
-
+      
       - name: "Cache Homebrew"
         id: cache-homebrew
         uses: actions/cache@v4
