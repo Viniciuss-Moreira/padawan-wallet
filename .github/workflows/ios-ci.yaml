@@ -25,7 +25,7 @@ FAUCET_HOST = 127.0.0.1:8872
 FAUCET_USER = dummy_user
 FAUCET_PASSWORD = dummy_password
 FAUCET_SCHEME = http:/
-FAUCET_URL = $(FAUCET_SCHEME)/$(FAUCET_HOST)/sendcoins
+FAUCET_URL = \$(FAUCET_SCHEME)/\$(FAUCET_HOST)/sendcoins
 EOL
 
       - name: "Cache Homebrew"
