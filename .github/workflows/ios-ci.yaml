@@ -40,11 +40,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-xcode-
+          key: ${{ runner.os }}-xcode-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-xcode-
 
-- name: "Set up Python"
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
