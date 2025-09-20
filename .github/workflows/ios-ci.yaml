@@ -66,5 +66,5 @@ jobs:
             -project iOS/PadawanWallet.xcodeproj \
             -scheme PadawanWallet \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,OS=latest' \
+            -destination "platform=iOS Simulator,name=Any iOS Simulator Device" \
             build
