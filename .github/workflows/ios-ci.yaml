@@ -20,13 +20,13 @@ jobs:
       - name: "Create FaucetConfig.xcconfig for CI"
         run: |
           mkdir -p iOS/PadawanWallet/Resources/Config
-          cat <<EOL > iOS/PadawanWallet/Resources/Config/FaucetConfig.xcconfig
-FAUCET_HOST = 127.0.0.1:8872
-FAUCET_USER = dummy_user
-FAUCET_PASSWORD = dummy_password
-FAUCET_SCHEME = http:/
-FAUCET_URL = $(FAUCET_SCHEME)/$(FAUCET_HOST)/sendcoins
-EOL
+          printf '%s\n' \
+            'FAUCET_HOST = 127.0.0.1:8872' \
+            'FAUCET_USER = dummy_user' \
+            'FAUCET_PASSWORD = dummy_password' \
+            'FAUCET_SCHEME = http:/' \
+            'FAUCET_URL = \$(FAUCET_SCHEME)/\$(FAUCET_HOST)/sendcoins' \
+            > iOS/PadawanWallet/Resources/Config/FaucetConfig.xcconfig
 
       - name: "Cache Homebrew"
         id: cache-homebrew
@@ -70,5 +70,5 @@ EOL
            -project iOS/PadawanWallet.xcodeproj \
            -scheme PadawanWallet \
            -sdk iphonesimulator \
-           -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+           -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' \
            build
