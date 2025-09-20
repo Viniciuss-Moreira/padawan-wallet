@@ -2,11 +2,9 @@ name: iOS CI Pipeline
 
 on:
   push:
-    branches: [ master ]
     paths:
       - 'iOS/**'
   pull_request:
-    branches: [ master ]
     paths:
       - 'iOS/**'
   workflow_dispatch:
@@ -18,6 +16,17 @@ jobs:
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
+
+      - name: "Create FaucetConfig.xcconfig for CI"
+        run: |
+          mkdir -p iOS/PadawanWallet/Resources/Config
+          cat <<EOL > iOS/PadawanWallet/Resources/Config/FaucetConfig.xcconfig
+FAUCET_HOST = 127.0.0.1:8872
+FAUCET_USER = dummy_user
+FAUCET_PASSWORD = dummy_password
+FAUCET_SCHEME = http:/
+FAUCET_URL = $(FAUCET_SCHEME)/$(FAUCET_HOST)/sendcoins
+EOL
 
       - name: "Cache Homebrew"
         id: cache-homebrew
