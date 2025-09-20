@@ -32,7 +32,7 @@ jobs:
         id: cache-homebrew
         uses: actions/cache@v4
         with:
-          path: /usr/local/Homebrew
+          path: /usr/local/Homebrew/Cellar
           key: ${{ runner.os }}-homebrew-
           restore-keys: |
             ${{ runner.os }}-homebrew-
