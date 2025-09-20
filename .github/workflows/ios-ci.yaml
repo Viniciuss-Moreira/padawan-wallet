@@ -17,7 +17,7 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@v4
 
-      - name: "Create FaucetConfig.xcconfig for CI"
+      - name: "Create faucetconfig example for CI"
         run: |
           mkdir -p iOS/PadawanWallet/Resources/Config
           printf '%s\n' \
@@ -28,7 +28,7 @@ jobs:
             'FAUCET_URL = \$(FAUCET_SCHEME)/\$(FAUCET_HOST)/sendcoins' \
             > iOS/PadawanWallet/Resources/Config/FaucetConfig.xcconfig
 
-      - name: "Cache Homebrew Cellar"
+      - name: "Cache Homebrew"
         uses: actions/cache@v4
         with:
           path: /usr/local/Homebrew/Cellar
@@ -36,7 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-homebrew-
 
-      - name: "Cache Xcode DerivedData"
+      - name: "Cache Xcode derivedData"
         uses: actions/cache@v4
         with:
           path: ~/Library/Developer/Xcode/DerivedData
@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-xcode-
 
-      - name: "Set up Python"
+      - name: "Set up python"
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -57,7 +57,7 @@ jobs:
       - name: "Setup Rust"
         run: rustup install stable && rustup default stable
 
-      - name: "Generate Xcode project and Strings"
+      - name: "Generate strings and project"
         run: just start-ios-dev
 
       - name: "Build app"
