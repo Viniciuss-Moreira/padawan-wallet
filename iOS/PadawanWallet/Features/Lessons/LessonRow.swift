@@ -9,17 +9,16 @@ import SwiftUI
 struct LessonRow: View {
     let lesson: Lesson
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
 
     var body: some View {
         ZStack {
-            // Shadow background
             RoundedRectangle(cornerRadius: 12)
                 .fill(.black)
                 .offset(x: 4, y: 4)
             
-            // Row content
             HStack {
-                Text(lesson.title)
+                Text(languageManager.localizedString(lesson.title))
                     .foregroundColor(colors.text)
                     .padding()
                 Spacer()

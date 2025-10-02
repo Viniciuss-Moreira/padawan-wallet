@@ -8,20 +8,12 @@
 import SwiftUI
 
 private struct ViewAssets {
-    static var navigationTitle = Strings.sendBitcoin
-    static var labelInputAmount = Strings.amount
-    static var placeHolderInputAmount = Strings.enterAmountSats
-    static var labelInputAddress = Strings.address
-    static var placeHolderInputAddress = Strings.enterSignetAddress
-    static var labelBalance = Strings.balance
-    static var labelTax = Strings.feesSatsVbytes
-    static var buttonVerifyTransaction = Strings.verifyTransaction
-    
     static var cameraIcon: Image = Image(systemName: "camera")
 }
 
 struct SendTransactionView: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     @StateObject private var viewModel: SendTransactionViewModel
     
     init(
@@ -36,7 +28,7 @@ struct SendTransactionView: View {
             VStack(spacing: 20) {
                 HStack {
                     Spacer()
-                    Text("\(ViewAssets.labelBalance) \(viewModel.getBalance()) sats")
+                    Text("\(languageManager.localizedString(Strings.balance)) \(viewModel.getBalance()) sats")
                         .font(Fonts.subtitle)
                         .multilineTextAlignment(.trailing)
                         .foregroundStyle(colors.textFaded)
@@ -49,7 +41,7 @@ struct SendTransactionView: View {
                 Spacer().frame(minHeight: 50)
                 
                 PadawanButton(
-                    title: ViewAssets.buttonVerifyTransaction,
+                    title: languageManager.localizedString(Strings.verifyTransaction),
                     action: {
                         dismissKeyBoard()
                         viewModel.verifyTransaction()
@@ -64,21 +56,19 @@ struct SendTransactionView: View {
             .padding()
         }
         .toolbar(.hidden, for: .tabBar)
-        .navigationTitle(ViewAssets.navigationTitle)
+        .navigationTitle(languageManager.localizedString(Strings.sendBitcoin))
         .onTapGesture {
             dismissKeyBoard()
         }
         .fullScreenCover(item: $viewModel.fullScreenCover) { item in
-            switch item {                
+            switch item {
             case .alert(let data):
                 AlertModalView(data: data)
                     .background(BackgroundClearView())
-            
             case .openCamera:
                 CameraScannView { address in
                     viewModel.address = address
                 }
-                
             default:
                 EmptyView()
             }
@@ -94,7 +84,6 @@ struct SendTransactionView: View {
                         viewModel.sendTransaction()
                     }
                 )
-                
             default:
                 EmptyView()
             }
@@ -105,16 +94,16 @@ struct SendTransactionView: View {
     private func buildInputTexts() -> some View {
         VStack(spacing: 20) {
             buildInputText(
-                label: ViewAssets.labelInputAmount,
-                placeholder: ViewAssets.placeHolderInputAmount,
+                label: languageManager.localizedString(Strings.amount),
+                placeholder: languageManager.localizedString(Strings.enterAmountSats),
                 text: $viewModel.amountValue,
                 trailingIcon: nil,
                 keyboardType: .numberPad
             )
             
             buildInputText(
-                label: ViewAssets.labelInputAddress,
-                placeholder: ViewAssets.placeHolderInputAddress,
+                label: languageManager.localizedString(Strings.address),
+                placeholder: languageManager.localizedString(Strings.enterSignetAddress),
                 text: $viewModel.address,
                 trailingIcon: ViewAssets.cameraIcon,
                 trailingAction: {
@@ -128,7 +117,7 @@ struct SendTransactionView: View {
     @ViewBuilder
     private func buildTax() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
-            buildHeader(title: ViewAssets.labelTax)
+            buildHeader(title: languageManager.localizedString(Strings.feesSatsVbytes))
             Spacer().frame(height: 8.0)
             Slider(
                 value: $viewModel.feeRate,
@@ -174,9 +163,6 @@ struct SendTransactionView: View {
                                 trailingIcon
                                     .padding(.horizontal)
                             }
-                            
-                        } else {
-                            EmptyView()
                         }
                     }
                 }

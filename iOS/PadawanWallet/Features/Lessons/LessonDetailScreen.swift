@@ -9,6 +9,7 @@ import SwiftUI
 struct LessonDetailScreen: View {
     let lesson: Lesson
     @Environment(\.padawanColors) private var colors
+    @ObservedObject private var languageManager = LanguageManager.shared
 
     var body: some View {
         ScrollView {
@@ -16,7 +17,7 @@ struct LessonDetailScreen: View {
                 if let content = lesson.content {
                     buildLessonContent(content: content)
                 } else {
-                    Text("Lesson content coming soon!")
+                    Text(languageManager.localizedString("lesson_content_coming_soon"))
                         .font(.title2)
                         .foregroundColor(colors.textLight)
                         .padding()
@@ -25,7 +26,7 @@ struct LessonDetailScreen: View {
             .padding()
         }
         .background(colors.background)
-        .navigationTitle(lesson.title)
+        .navigationTitle(languageManager.localizedString(lesson.title))
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -35,7 +36,7 @@ struct LessonDetailScreen: View {
             let element = content.elements[index]
             
             VStack(alignment: .leading, spacing: 12) {
-                Text(NSLocalizedString(element.resourceKey, comment: ""))
+                Text(languageManager.localizedString(element.resourceKey))
                     .font(fontForElementType(element.type))
                     .fontWeight(element.type == .title || element.type == .subtitle ? .bold : .regular)
                     .lineSpacing(element.type == .paragraph ? 4 : 0)

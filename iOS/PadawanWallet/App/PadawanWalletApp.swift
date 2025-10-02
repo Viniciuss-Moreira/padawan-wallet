@@ -13,6 +13,7 @@ let isIpad = UIDevice.current.userInterfaceIdiom == .pad
 struct PadawanWalletApp: App {
     @State private var navigationPath = NavigationPath()
     @ObservedObject var session = Session.shared
+    @StateObject var languageManager = LanguageManager.shared
     
     init() {
         UINavigationBarAppearance.setupNavigationBar(.tatooineDesert)
@@ -32,6 +33,7 @@ struct PadawanWalletApp: App {
                 }
             }
             .environment(\.padawanColors, session.themeChoice.colors)
+            .environmentObject(languageManager)
         }
     }
 }

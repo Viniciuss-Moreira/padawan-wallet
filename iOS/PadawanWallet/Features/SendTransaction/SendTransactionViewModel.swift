@@ -25,6 +25,7 @@ final class SendTransactionViewModel: ObservableObject {
     private var transaction: Psbt?
     
     private let bdkClient: BDKClient
+    @EnvironmentObject var languageManager: LanguageManager
     
     init(
         path: Binding<NavigationPath>,
@@ -40,20 +41,18 @@ final class SendTransactionViewModel: ObservableObject {
     
     func getBalance() -> String {
         let balance = try? bdkClient.getBalance()
-        
         return balance?.confirmed.toSat().formattedSats() ?? "0"
     }
     
     func verifyTransaction() {
         if isValidTransaction() {
             do {
-                guard let amount = UInt64(amountValue) else {
-                    return
-                }
+                guard let amount = UInt64(amountValue) else { return }
                 let fee = UInt64(feeRate)
-            
+                
                 let transaction = try bdkClient.createTransaction(address, amount, fee)
                 let tax = try transaction.fee()
+                
                 sheetScreen = .verifyTransaction(
                     amount: "\(amountValue) sats",
                     address: address,
@@ -62,7 +61,10 @@ final class SendTransactionViewModel: ObservableObject {
                 self.transaction = transaction
             } catch {
                 fullScreenCover = .alert(
-                    data: .init(title: Strings.genericTitleError, subtitle: error.localizedDescription)
+                    data: .init(
+                        title: languageManager.localizedString(Strings.genericTitleError),
+                        subtitle: error.localizedDescription
+                    )
                 )
             }
         }
@@ -71,15 +73,13 @@ final class SendTransactionViewModel: ObservableObject {
     func sendTransaction() {
         Task {
             do {
-                guard let amount = UInt64(amountValue) else {
-                    return
-                }
+                guard let amount = UInt64(amountValue) else { return }
                 let fee = UInt64(feeRate)
                 
                 try await bdkClient.send(address, amount, fee)
                 fullScreenCover = .alert(
                     data: .init(
-                        title: Strings.transactionBroadcast,
+                        title: languageManager.localizedString(Strings.transactionBroadcast),
                         onPrimaryButtonTap: { [weak self] in
                             self?.path.removeLast()
                         }
@@ -87,7 +87,10 @@ final class SendTransactionViewModel: ObservableObject {
                 )
             } catch {
                 self.fullScreenCover = .alert(
-                    data: .init(title: Strings.genericTitleError, subtitle: error.localizedDescription)
+                    data: .init(
+                        title: languageManager.localizedString(Strings.genericTitleError),
+                        subtitle: error.localizedDescription
+                    )
                 )
             }
         }
@@ -98,14 +101,20 @@ final class SendTransactionViewModel: ObservableObject {
     private func isValidTransaction() -> Bool {
         if amountValue.isEmpty {
             fullScreenCover = .alert(
-                data: .init(title: Strings.genericTitleError, subtitle: Strings.amountErrorMessage)
+                data: .init(
+                    title: languageManager.localizedString(Strings.genericTitleError),
+                    subtitle: languageManager.localizedString(Strings.amountErrorMessage)
+                )
             )
             return false
         }
         
         if address.isEmpty {
             fullScreenCover = .alert(
-                data: .init(title: Strings.genericTitleError, subtitle: Strings.addressErrorMessage)
+                data: .init(
+                    title: languageManager.localizedString(Strings.genericTitleError),
+                    subtitle: languageManager.localizedString(Strings.addressErrorMessage)
+                )
             )
             return false
         }

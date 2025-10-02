@@ -12,8 +12,8 @@ import BitcoinDevKit
 final class ReceiveTransactionViewModel: ObservableObject {
     
     @Binding var path: NavigationPath
-    
     private let bdkClient: BDKClient
+    
     @Published var address: String?
     
     init(
@@ -25,14 +25,16 @@ final class ReceiveTransactionViewModel: ObservableObject {
     }
     
     func generateAddress() {
-        if let address = try? bdkClient.getAddress() {
-            self.address = address
-        } else {
-            // error
+        do {
+            let newAddress = try bdkClient.getAddress()
+            self.address = newAddress
+        } catch {
+            print("Failed to generate address: \(error)")
         }
     }
     
     func copyAddress() {
+        guard let address = address else { return }
         UIPasteboard.general.string = address
     }
 }

@@ -11,16 +11,20 @@ final class ImporViewModel: ObservableObject {
     
     @Binding var path: NavigationPath
     private let bdkClient: BDKClient
+    private let languageManager: LanguageManager
+    
     @Published var fullScreenCover: ImportWalletNavigation?
     
     var words: [String] = .init(repeating: "", count: 12)
     
     init(
         path: Binding<NavigationPath>,
-        bdkClient: BDKClient
+        bdkClient: BDKClient,
+        languageManager: LanguageManager = .shared
     ) {
         _path = path
         self.bdkClient = bdkClient
+        self.languageManager = languageManager
     }
     
     func importWallet() {
@@ -56,10 +60,9 @@ final class ImporViewModel: ObservableObject {
     private func validate() -> String? {
         for i in 0..<12 {
             if words[i].isEmpty {
-                return "Word \(i+1) is empty"
+                return languageManager.localizedString("word_number_\(i+1)_is_empty")
             }
         }
-        
         return nil
     }
 }

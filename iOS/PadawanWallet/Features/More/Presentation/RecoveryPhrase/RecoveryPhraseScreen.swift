@@ -5,12 +5,9 @@
 
 import SwiftUI
 
-private struct RecoveryPhraseScreenAssets {
-    static var title = Strings.yourRecoveryPhrase
-}
-
 struct RecoveryPhraseScreen: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     
     private let words: String
     
@@ -27,23 +24,21 @@ struct RecoveryPhraseScreen: View {
         BackgroundView {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    let words = words.components(separatedBy: .whitespaces)
+                    let wordsArray = words.components(separatedBy: .whitespaces)
                     
-                    ForEach(Array(words.enumerated()), id: \.offset) { index, word in
-                        PadawanCardView(
-                            backgroundColor: colors.accent1) {
-                                Text("\(index + 1). \(word)")
-                                    .font(Fonts.font(.medium, 16))
-                                    .foregroundColor(colors.text)
-                            }
-                            .frame(height: 50)
-                        
+                    ForEach(Array(wordsArray.enumerated()), id: \.offset) { index, word in
+                        PadawanCardView(backgroundColor: colors.accent1) {
+                            Text("\(index + 1). \(word)")
+                                .font(Fonts.font(.medium, 16))
+                                .foregroundColor(colors.text)
+                        }
+                        .frame(height: 50)
                     }
                 }
                 .padding()
             }
         }
-        .navigationTitle(RecoveryPhraseScreenAssets.title)
+        .navigationTitle(languageManager.localizedString("yourRecoveryPhrase"))
     }
 }
 

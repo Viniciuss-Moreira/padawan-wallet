@@ -12,19 +12,8 @@ final class WelcomeViewModel: ObservableObject {
     struct OnboardingPage: Identifiable {
         let id = UUID()
         let image: Image
-        let title: String
-        let text: String
-    }
-    
-    struct OnboardingStrings {
-        static let screenTitle = Strings.onboardTitle1
-        static let welcomeText = Strings.onboard1
-        static let createWalletButtonTitle = Strings.createAWallet
-        static let importWalletButtonTitle = Strings.alreadyHaveAWallet
-        static let screenTitlePage2 = Strings.onboardTitle2
-        static let screenTextPage2 = Strings.onboard2
-        static let screenTitlePage3 = Strings.onboardTitle3
-        static let screenTextPage3 = Strings.onboard3
+        let titleKey: String
+        let textKey: String
     }
     
     @Binding var path: NavigationPath
@@ -32,10 +21,10 @@ final class WelcomeViewModel: ObservableObject {
     @Published var fullScreenCover: ImportWalletNavigation?
     @Published var onboardingPages: [OnboardingPage] = []
     
-    var createWalletButtonTitle: String { OnboardingStrings.createWalletButtonTitle }
-    var importWalletButtonTitle: String { OnboardingStrings.importWalletButtonTitle }
-    
     private let bdkClient: BDKClient
+    
+    var createWalletButtonTitleKey: String { "welcome_create_wallet" }
+    var importWalletButtonTitleKey: String { "welcome_import_wallet" }
     
     init(path: Binding<NavigationPath>, bdkClient: BDKClient) {
         _path = path
@@ -47,18 +36,18 @@ final class WelcomeViewModel: ObservableObject {
         [
             OnboardingPage(
                 image: Asset.Images.padawantransparent.toImage,
-                title: OnboardingStrings.screenTitle,
-                text: OnboardingStrings.welcomeText
+                titleKey: "onboard_title_1",
+                textKey: "onboard_text_1"
             ),
             OnboardingPage(
                 image: Asset.Images.bitcoinicon1.toImage,
-                title: OnboardingStrings.screenTitlePage2,
-                text: OnboardingStrings.screenTextPage2
+                titleKey: "onboard_title_2",
+                textKey: "onboard_text_2"
             ),
             OnboardingPage(
                 image: Image(systemName: "graduationcap"),
-                title: OnboardingStrings.screenTitlePage3,
-                text: OnboardingStrings.screenTextPage3
+                titleKey: "onboard_title_3",
+                textKey: "onboard_text_3"
             )
         ]
     }

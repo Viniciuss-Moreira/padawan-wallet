@@ -6,17 +6,36 @@
 import SwiftUI
 
 private struct MoreRootViewAssets {
-    static var title = Strings.settings
-    static var subtitle = Strings.everythingElse
+    static func title(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("settings")
+    }
     
-    static var buttonRecoverPhase = Strings.recoveryPhrase
-    static var buttonSendCoinBack = Strings.sendSignetCoinsBack
-    static var buttonSelectLanguage = Strings.changeLanguage
-    static var buttonAboutPadawan = Strings.aboutPadawan
-    static var buttonReset = Strings.resetCompletedChapters
+    static func subtitle(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("everything_else")
+    }
     
-    static func separatorWithVersion(_ version: String) -> String {
-        "\(Strings.padawanWallet) \(version)"
+    static func buttonRecoverPhase(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("recovery_phrase")
+    }
+    
+    static func buttonSendCoinBack(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("send_signet_coins_back")
+    }
+    
+    static func buttonSelectLanguage(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("change_language")
+    }
+    
+    static func buttonAboutPadawan(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("about_padawan")
+    }
+    
+    static func buttonReset(_ languageManager: LanguageManager) -> String {
+        languageManager.localizedString("reset_completed_chapters")
+    }
+    
+    static func separatorWithVersion(_ languageManager: LanguageManager, _ version: String) -> String {
+        "\(languageManager.localizedString("padawan_wallet")) \(version)"
     }
     
     static var chevronRight = Image(systemName: "chevron.right.2")
@@ -24,6 +43,7 @@ private struct MoreRootViewAssets {
 
 struct MoreRootView: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     @StateObject private var viewModel: MoreViewModel
     
     init(
@@ -38,9 +58,9 @@ struct MoreRootView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12.0) {
                     Group {
-                        Text(MoreRootViewAssets.title)
+                        Text(MoreRootViewAssets.title(languageManager))
                             .font(Fonts.title)
-                        Text(MoreRootViewAssets.subtitle)
+                        Text(MoreRootViewAssets.subtitle(languageManager))
                             .font(Fonts.subtitle)
                     }
                     .foregroundStyle(colors.text)
@@ -50,7 +70,7 @@ struct MoreRootView: View {
                     buildSeparator()
                     
                     FilledButton(
-                        title: MoreRootViewAssets.buttonReset,
+                        title: MoreRootViewAssets.buttonReset(languageManager),
                         titleColor: colors.text,
                         backgroundColor: colors.errorRed
                     ) {
@@ -70,28 +90,28 @@ struct MoreRootView: View {
     private func buildButtons() -> some View {
         VStack(spacing: 20) {
             FilledButton(
-                title: MoreRootViewAssets.buttonRecoverPhase,
+                title: MoreRootViewAssets.buttonRecoverPhase(languageManager),
                 icon: MoreRootViewAssets.chevronRight
             ) {
                 viewModel.showRecoveryPhrase()
             }
             
             FilledButton(
-                title: MoreRootViewAssets.buttonSendCoinBack,
+                title: MoreRootViewAssets.buttonSendCoinBack(languageManager),
                 icon: MoreRootViewAssets.chevronRight
             ) {
                 viewModel.showSendCoinsBack()
             }
             
             FilledButton(
-                title: MoreRootViewAssets.buttonSelectLanguage,
+                title: MoreRootViewAssets.buttonSelectLanguage(languageManager),
                 icon: MoreRootViewAssets.chevronRight
             ) {
                 viewModel.showLanguage()
             }
             
             FilledButton(
-                title: MoreRootViewAssets.buttonAboutPadawan,
+                title: MoreRootViewAssets.buttonAboutPadawan(languageManager),
                 icon: MoreRootViewAssets.chevronRight
             ) {
                 viewModel.showAbout()
@@ -126,7 +146,7 @@ struct MoreRootView: View {
         VStack(spacing: 4) {
             Divider()
                 .background(colors.textFaded)
-            Text(MoreRootViewAssets.separatorWithVersion(viewModel.version))
+            Text(MoreRootViewAssets.separatorWithVersion(languageManager, viewModel.version))
                 .font(.footnote)
                 .foregroundColor(colors.textLight)
             Divider()
@@ -140,5 +160,6 @@ struct MoreRootView: View {
 #Preview {
     MoreRootView(path: .constant(.init()))
         .environment(\.padawanColors, .tatooineDesert)
+        .environmentObject(LanguageManager.shared)
 }
 #endif

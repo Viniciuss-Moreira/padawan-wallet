@@ -15,6 +15,7 @@ private struct WalletViewAssets {
 
 struct WalletView: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     @StateObject private var viewModel: WalletViewModel
     
     init(
@@ -62,18 +63,12 @@ struct WalletView: View {
         }
         .navigationDestination(for: WalletScreenNavigation.self) { item in
             switch item {
-            case WalletScreenNavigation.receive:
-                ReceiveTransactionView(
-                    path: viewModel.$path,
-                    bdkClient: viewModel.bdkClient
-                )
-                
-            case WalletScreenNavigation.send:
-                SendTransactionView(
-                    path: viewModel.$path,
-                    bdkClient: viewModel.bdkClient
-                )
-                
+            case .receive:
+                ReceiveTransactionView(path: viewModel.$path, bdkClient: viewModel.bdkClient)
+                    .environmentObject(languageManager)
+            case .send:
+                SendTransactionView(path: viewModel.$path, bdkClient: viewModel.bdkClient)
+                    .environmentObject(languageManager)
             default:
                 EmptyView()
             }
@@ -83,7 +78,6 @@ struct WalletView: View {
             case .alertError(let data):
                 AlertModalView(data: data)
                     .background(BackgroundClearView())
-                
             default:
                 EmptyView()
             }
@@ -94,19 +88,15 @@ struct WalletView: View {
     private func buildSendReceiveButtons() -> some View {
         HStack(spacing: 16) {
             PadawanButton(
-                title: WalletViewAssets.receiveButtonTitle,
-                icon: WalletViewAssets.receiveButtonIcon,
-                action: {
-                    viewModel.showReceiveScreen()
-                }
+                title: languageManager.localizedString(Strings.receive),
+                icon: Image(systemName: "arrow.down"),
+                action: { viewModel.showReceiveScreen() }
             )
             
             PadawanButton(
-                title: WalletViewAssets.sendButtonTitle,
-                icon: WalletViewAssets.sendButtonIcon,
-                action: {
-                    viewModel.showSendScreen()
-                }
+                title: languageManager.localizedString(Strings.send),
+                icon: Image(systemName: "arrow.up"),
+                action: { viewModel.showSendScreen() }
             )
         }
         .frame(minHeight: 50)

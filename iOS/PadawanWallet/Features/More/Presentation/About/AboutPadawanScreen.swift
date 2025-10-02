@@ -7,29 +7,25 @@ import SwiftUI
 
 struct AboutPadawanScreen: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                // About text
-                Text(String(localized: "about_text"))
+                Text(languageManager.localizedString("about_text"))
                     .font(Fonts.font(.regular, 16))
                     .foregroundColor(colors.textLight)
                     .multilineTextAlignment(.leading)
-                
-                // Privacy text
-                Text(String(localized: "privacy_text"))
+                Text(languageManager.localizedString("privacy_text"))
                     .font(Fonts.font(.regular, 16))
                     .foregroundColor(colors.textLight)
                     .multilineTextAlignment(.leading)
-                
-                // Privacy policy link
                 Button(action: {
-                    if let url = URL(string: String(localized: "privacy_link")) {
+                    if let url = URL(string: languageManager.localizedString("privacy_link")) {
                         UIApplication.shared.open(url)
                     }
                 }) {
-                    Text("Read our privacy policy here.")
+                    Text(languageManager.localizedString("button_link_privacy"))
                         .font(Fonts.font(.regular, 16))
                         .foregroundColor(colors.accent2)
                         .underline()
@@ -40,7 +36,7 @@ struct AboutPadawanScreen: View {
             .padding()
         }
         .background(colors.background)
-        .navigationTitle(String(localized: "about_padawan"))
+        .navigationTitle(languageManager.localizedString("about_padawan"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

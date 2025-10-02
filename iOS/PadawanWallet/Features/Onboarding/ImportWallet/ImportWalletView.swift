@@ -9,20 +9,25 @@ import SwiftUI
 
 private extension ImportWalletView {
     struct ImportWalletViewStrings {
-        static var screenTitle: String = Strings.recoverAWallet
-        static var subtitle: String = Strings.enterYour12Words
-        
-        static var buttonTitle: String = Strings.recoverWallet
-        
-        static func wordNumber(_ number: Int) -> String {
-            "Word \(number)"
+        static func screenTitle(_ languageManager: LanguageManager) -> String {
+            languageManager.localizedString("recover_a_wallet")
+        }
+        static func subtitle(_ languageManager: LanguageManager) -> String {
+            languageManager.localizedString("enter_your_12_words")
+        }
+        static func buttonTitle(_ languageManager: LanguageManager) -> String {
+            languageManager.localizedString("recover_wallet")
+        }
+        static func wordNumber(_ number: Int, _ languageManager: LanguageManager) -> String {
+            languageManager.localizedString("word_number_\(number)")
         }
     }
 }
 
 struct ImportWalletView: View {
     @Environment(\.padawanColors) private var colors
-    
+    @EnvironmentObject var languageManager: LanguageManager
+
     @StateObject private var viewModel: ImporViewModel
     
     init(
@@ -36,12 +41,12 @@ struct ImportWalletView: View {
         BackgroundView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text(ImportWalletViewStrings.screenTitle)
+                    Text(ImportWalletViewStrings.screenTitle(languageManager))
                         .font(Fonts.title)
                         .foregroundStyle(colors.textFaded)
                         .multilineTextAlignment(.leading)
                     
-                    Text(ImportWalletViewStrings.subtitle)
+                    Text(ImportWalletViewStrings.subtitle(languageManager))
                         .font(Fonts.subtitle)
                         .foregroundStyle(colors.textFaded)
                         .multilineTextAlignment(.leading)
@@ -50,7 +55,7 @@ struct ImportWalletView: View {
                     
                     Spacer().frame(height: 20)
                     
-                    PadawanButton(title: ImportWalletViewStrings.buttonTitle) {
+                    PadawanButton(title: ImportWalletViewStrings.buttonTitle(languageManager)) {
                         dismissKeyBoard()
                         viewModel.importWallet()
                     }
@@ -65,7 +70,6 @@ struct ImportWalletView: View {
             case .alertError(let data):
                 AlertModalView(data: data)
                     .background(BackgroundClearView())
-                
             default:
                 EmptyView()
             }
@@ -76,8 +80,8 @@ struct ImportWalletView: View {
     private func buildForm() -> some View {
         ForEach(0..<12) { i in
             buildTextField(
-                label: ImportWalletViewStrings.wordNumber(i+1),
-                placeholder: ImportWalletViewStrings.wordNumber(i+1),
+                label: ImportWalletViewStrings.wordNumber(i+1, languageManager),
+                placeholder: ImportWalletViewStrings.wordNumber(i+1, languageManager),
                 text: .init(get: {
                     viewModel.words[i]
                 }, set: { value in
@@ -110,5 +114,6 @@ struct ImportWalletView: View {
         bdkClient: .mock
     )
     .environment(\.padawanColors, .tatooineDesert)
+    .environmentObject(LanguageManager.shared)
 }
 #endif

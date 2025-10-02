@@ -15,6 +15,7 @@ struct ScaleButtonStyle: ButtonStyle {
 
 struct WelcomeView: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     @StateObject private var viewModel: WelcomeViewModel
     @State private var currentPage = 0
     
@@ -27,8 +28,25 @@ struct WelcomeView: View {
             VStack {
                 TabView(selection: $currentPage) {
                     ForEach(Array(viewModel.onboardingPages.enumerated()), id: \.1.id) { index, page in
-                        buildTabViewItem(page: page)
-                            .tag(index)
+                        VStack(spacing: 20) {
+                            Spacer()
+                            PadawanCardIconView(image: page.image, size: 100)
+                            
+                            Text(languageManager.localizedString(page.titleKey))
+                                .font(Fonts.title)
+                                .foregroundStyle(colors.text)
+                                .padding(.top, 20)
+                            
+                            Text(languageManager.localizedString(page.textKey))
+                                .font(Fonts.body)
+                                .foregroundStyle(colors.textFaded)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                            
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .tag(index)
                     }
                     
                     VStack(spacing: 60) {
@@ -74,38 +92,14 @@ struct WelcomeView: View {
     }
     
     @ViewBuilder
-    private func buildTabViewItem(page: WelcomeViewModel.OnboardingPage) -> some View {
-        VStack(spacing: 20) {
-            Spacer()
-            
-            PadawanCardIconView(image: page.image, size: 100)
-
-            Text(page.title)
-                .font(Fonts.title)
-                .foregroundStyle(colors.text)
-                .padding(.top, 20)
-
-            Text(page.text)
-                .font(Fonts.body)
-                .foregroundStyle(colors.textFaded)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-    }
-    
-    @ViewBuilder
     private func buildButtons() -> some View {
         VStack(spacing: 30) {
-            PadawanButton(title: viewModel.createWalletButtonTitle) {
+            PadawanButton(title: languageManager.localizedString(viewModel.createWalletButtonTitleKey)) {
                 viewModel.createWallet()
             }
             .frame(height: 105)
             
-            PadawanButton(title: viewModel.importWalletButtonTitle) {
+            PadawanButton(title: languageManager.localizedString(viewModel.importWalletButtonTitleKey)) {
                 viewModel.importWallet()
             }
             .frame(height: 105)
@@ -125,7 +119,6 @@ struct WelcomeView: View {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 50, height: 50)
-                        
                 }
                 .buttonStyle(ScaleButtonStyle())
             } else {
@@ -158,7 +151,6 @@ struct WelcomeView: View {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 50, height: 50)
-                        
                 }
                 .buttonStyle(ScaleButtonStyle())
             } else {
@@ -173,10 +165,12 @@ struct WelcomeView: View {
 #Preview("TatooineDesert") {
     WelcomeView(path: .constant(.init()))
         .environment(\.padawanColors, .tatooineDesert)
+        .environmentObject(LanguageManager.shared)
 }
 
 #Preview("VaderDark") {
     WelcomeView(path: .constant(.init()))
         .environment(\.padawanColors, .vaderDark)
+        .environmentObject(LanguageManager.shared)
 }
 #endif

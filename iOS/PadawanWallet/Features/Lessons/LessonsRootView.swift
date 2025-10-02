@@ -36,6 +36,7 @@ enum ElementType {
 
 struct LessonsRootView: View {
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     
     let lesson1Content = LessonContent(
         elements: [
@@ -60,68 +61,158 @@ struct LessonsRootView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Padawan journey")
+                        Text(languageManager.localizedString("padawan_journey"))
                             .font(.title)
                             .bold()
                             .foregroundColor(colors.text)
-                        Text("Continue on your journey of learning bitcoin.")
+                        Text(languageManager.localizedString("padawan_journey_subtitle"))
                             .foregroundColor(colors.textLight)
                     }
 
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Getting started")
+                        Text(languageManager.localizedString("getting_started"))
                             .font(.headline)
                             .bold()
                             .foregroundColor(colors.text)
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "1. What is the Bitcoin Signet?", isHighlighted: false, content: lesson1Content))) {
-                            LessonRow(lesson: Lesson(title: "1. What is the Bitcoin Signet?", isHighlighted: false, content: lesson1Content))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l1_title"),
+                                isHighlighted: false,
+                                content: lesson1Content
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l1_title"),
+                                isHighlighted: false,
+                                content: lesson1Content
+                            ))
                         }
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "2. Receiving bitcoin", isHighlighted: true, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "2. Receiving bitcoin", isHighlighted: true, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l2_title"),
+                                isHighlighted: true,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l2_title"),
+                                isHighlighted: true,
+                                content: nil
+                            ))
                         }
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "3. Sending bitcoin", isHighlighted: false, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "3. Sending bitcoin", isHighlighted: false, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l3_title"),
+                                isHighlighted: false,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l3_title"),
+                                isHighlighted: false,
+                                content: nil
+                            ))
                         }
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Transactions")
+                        Text(languageManager.localizedString("transactions"))
                             .font(.headline)
                             .bold()
                             .foregroundColor(colors.text)
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "4. What is the mempool?", isHighlighted: true, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "4. What is the mempool?", isHighlighted: true, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l4_title"),
+                                isHighlighted: true,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l4_title"),
+                                isHighlighted: true,
+                                content: nil
+                            ))
                         }
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "5. What are transaction fees?", isHighlighted: false, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "5. What are transaction fees?", isHighlighted: false, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l5_title"),
+                                isHighlighted: false,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l5_title"),
+                                isHighlighted: false,
+                                content: nil
+                            ))
                         }
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "6. Bitcoin units", isHighlighted: false, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "6. Bitcoin units", isHighlighted: false, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l6_title"),
+                                isHighlighted: false,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l6_title"),
+                                isHighlighted: false,
+                                content: nil
+                            ))
                         }
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Advanced")
+                        Text(languageManager.localizedString("advanced"))
                             .font(.headline)
                             .bold()
                             .foregroundColor(colors.text)
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "7. Seed phrases", isHighlighted: false, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "7. Seed phrases", isHighlighted: false, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l7_title"),
+                                isHighlighted: false,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l7_title"),
+                                isHighlighted: false,
+                                content: nil
+                            ))
                         }
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "8. Private keys", isHighlighted: false, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "8. Private keys", isHighlighted: false, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l8_title"),
+                                isHighlighted: false,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l8_title"),
+                                isHighlighted: false,
+                                content: nil
+                            ))
                         }
                         
-                        NavigationLink(destination: LessonDetailScreen(lesson: Lesson(title: "9. UTXOs", isHighlighted: false, content: nil))) {
-                            LessonRow(lesson: Lesson(title: "9. UTXOs", isHighlighted: false, content: nil))
+                        NavigationLink(destination: LessonDetailScreen(
+                            lesson: Lesson(
+                                title: languageManager.localizedString("l9_title"),
+                                isHighlighted: false,
+                                content: nil
+                            )
+                        )) {
+                            LessonRow(lesson: Lesson(
+                                title: languageManager.localizedString("l9_title"),
+                                isHighlighted: false,
+                                content: nil
+                            ))
                         }
                     }
                 }

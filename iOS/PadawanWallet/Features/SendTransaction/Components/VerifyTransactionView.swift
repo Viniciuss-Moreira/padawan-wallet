@@ -7,17 +7,10 @@
 
 import SwiftUI
 
-private struct ViewAssets {
-    static var screenTitle = Strings.confirmTransaction
-    static var amountLabel = Strings.amount
-    static var addressLabel = Strings.address
-    static var taxLabel = Strings.totalFee
-    static var confirmaButton = Strings.confirmAndBroadcast
-}
-
 struct VerifyTransactionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.padawanColors) private var colors
+    @EnvironmentObject var languageManager: LanguageManager
     
     private let amount: String
     private let address: String
@@ -34,24 +27,24 @@ struct VerifyTransactionView: View {
     var body: some View {
         BackgroundView {
             VStack(spacing: 20) {
-                Text(ViewAssets.screenTitle)
+                Text(languageManager.localizedString(Strings.confirmTransaction))
                     .font(Fonts.font(.medium, 24))
                     .foregroundStyle(colors.text)
                     .padding(.top, 24)
                 
                 VStack(alignment: .leading, spacing: 16) {
                     buildTitle(
-                        ViewAssets.amountLabel,
+                        languageManager.localizedString(Strings.amount),
                         subtitle: amount
                     )
                     
                     buildTitle(
-                        ViewAssets.addressLabel,
+                        languageManager.localizedString(Strings.address),
                         subtitle: address
                     )
                     
                     buildTitle(
-                        ViewAssets.taxLabel,
+                        languageManager.localizedString(Strings.totalFee),
                         subtitle: tax
                     )
                 }
@@ -59,7 +52,7 @@ struct VerifyTransactionView: View {
                 
                 Spacer()
                 
-                PadawanButton(title: ViewAssets.confirmaButton) {
+                PadawanButton(title: languageManager.localizedString(Strings.confirmAndBroadcast)) {
                     dismiss()
                     primaryAction()
                 }

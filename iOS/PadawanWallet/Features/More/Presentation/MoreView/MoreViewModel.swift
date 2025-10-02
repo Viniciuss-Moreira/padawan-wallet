@@ -12,18 +12,19 @@ import Foundation
 final class MoreViewModel: ObservableObject {
     
     @Binding var path: NavigationPath
-
-    @Published var fullScreenCover: MoreScreenNavigation?
     @Published var version: String = ""
     
     let bdkClient: BDKClient
+    @ObservedObject var languageManager: LanguageManager
     
     init(
         path: Binding<NavigationPath>,
-        bdkClient: BDKClient
+        bdkClient: BDKClient,
+        languageManager: LanguageManager = .shared
     ) {
         _path = path
         self.bdkClient = bdkClient
+        self.languageManager = languageManager
         buildVersion()
     }
     
